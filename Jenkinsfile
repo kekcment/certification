@@ -2,7 +2,7 @@ pipeline {
   
   agent {
     docker {
-        image 'kekcment/boxf:0.1.1'
+        image 'kekcment/jdk-plus:0.1.0'
         args '--privileged -v /var/run/docker.sock:/var/run/docker.sock -u root'
     }
   }   
