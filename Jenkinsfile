@@ -12,6 +12,7 @@ pipeline {
     stage('Copy source from git') {
       steps {
         echo 'git clone'
+        sh 'cd /tmp/'
         git 'https://github.com/kekcment/sertification.git'
       }
     }    
