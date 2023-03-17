@@ -2,7 +2,7 @@ pipeline {
   
   agent {
     docker {
-        image 'kekcment/tom:0.1.2'
+        image 'kekcment/boxf:0.1.0'
         args '--privileged -v /var/run/docker.sock:/var/run/docker.sock -u root'
     }
   }   
@@ -12,7 +12,7 @@ pipeline {
     stage('Copy source from git') {
       steps {
         echo 'git clone'
-        git 'https://github.com/kekcment/calcul.git'
+        git 'https://github.com/kekcment/sertification.git'
       }
     }    
     
@@ -23,13 +23,13 @@ pipeline {
       }
     }
 
-    // stage('Show file War') {
-    //   steps {
-    //     echo 'ShoW file War'
-    //     sh 'cd /tmp/calc'
-    //     sh 'ls /tmp/calc'
-    //   }
-    // }
+    stage('Show file War') {
+      steps {
+        echo 'ShoW file War'
+        sh 'cd /tmp/sertification'
+        sh 'ls /tmp/sertification'
+      }
+    }
     
 //     stage('Make docker image') {
 //       steps {
@@ -62,5 +62,5 @@ pipeline {
 //       }
 //     }
 
-// }
-// }
+}
+}
