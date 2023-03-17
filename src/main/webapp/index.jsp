@@ -9,7 +9,7 @@
 <h2>Hello world!</h2>
 <h2>Hello Mr Jenkins!</h2>
 <h2>O! Hi Mark!</h2>
-    <h2>Anyway,what's about your sex live?</h2>
+
 
 <p>This Instance is running on <strong><%= System.getenv("BOXFUSE_PLATFORM_NAME") %>
 </strong> and has the id <strong><%= System.getenv("BOXFUSE_INSTANCE_ID") %>
