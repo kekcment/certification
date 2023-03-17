@@ -13,7 +13,7 @@ pipeline {
       steps {
         echo 'git clone'
         sh 'cd /tmp/'
-        git 'https://github.com/kekcment/sertification.git'
+        git 'https://github.com/kekcment/certification.git'
       }
     }    
     
@@ -24,13 +24,13 @@ pipeline {
       }
     }
 
-    stage('Show file War') {
-      steps {
-        echo 'ShoW file War'
-        sh 'cd /tmp/sertification'
-        sh 'ls /tmp/sertification'
-      }
-    }
+    // stage('Show file War') {
+    //   steps {
+    //     echo 'ShoW file War'
+    //     sh 'cd /tmp/sertification'
+    //     sh 'ls /tmp/sertification'
+    //   }
+    // }
     
 //     stage('Make docker image') {
 //       steps {
