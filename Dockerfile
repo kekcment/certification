@@ -1,8 +1,10 @@
+# FROM tomcat:9.0.72-jre11
+# ADD ./target/mycalcwebapp.war /usr/local/tomcat/webapps/
 FROM ubuntu:20.04
 RUN apt update
 RUN apt install git -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install maven -y
 WORKDIR /tmp/
-RUN git clone https://github.com/kekcment/App44.git
-WORKDIR  /tmp/App44/
+RUN git clone https://github.com/kekcment/sertification.git
+WORKDIR  /tmp/boxfuse-sample-java-war-hello/
 RUN mvn package

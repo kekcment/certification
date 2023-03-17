@@ -1,48 +1,66 @@
 pipeline {
+  
   agent {
-
     docker {
-        image ''
+        image 'kekcment/tom:0.1.2'
+        args '--privileged -v /var/run/docker.sock:/var/run/docker.sock -u root'
     }
-  }
-
+  }   
 
   stages {
-
-    stage('Copy source with configs') {
+      
+    stage('Copy source from git') {
       steps {
-        git(url: 'http://cvs.tinkoff-dbs1.west.com/backendsbox/shop2.backend.git', branch: 'backend1-staging', poll: true, credentialsId: 'git')
-        sh 'ssh-keyscan -H devbuild-srv01 >> ~/.ssh/known_hosts'
-        sh 'scp jenkins@devbuild-srv01:/home/jenkins/build/configs/staging/gateway-api/application-business-config-defaults.yml gateway-api/src/main/resources/application-business-config-defaults.yml'
+        echo 'git clone'
+        git 'https://github.com/kekcment/calcul.git'
+      }
+    }    
+    
+    stage('Build War') {
+      steps {
+        echo 'Build War'
+        sh 'mvn package'
       }
     }
 
-    stage('Build jar') {
-      steps {
-        sh 'gradle bootRepackage'
-      }
-    }
-
+    // stage('Show file War') {
+    //   steps {
+    //     echo 'ShoW file War'
+    //     sh 'cd /tmp/calc'
+    //     sh 'ls /tmp/calc'
+    //   }
+    // }
+    
 //     stage('Make docker image') {
 //       steps {
-//         sh 'cp -R gateway-api/build/libs/* docker-setup/shop/gateway-api && cd docker-setup/shop/gateway-api && docker build --tag=gateway-api .'
-//         sh '''docker tag gateway-api devcvs-srv01:5000/shop2-backend/gateway-api:2-staging && docker push devcvs-srv01:5000/shop2-backend/gateway-api:2-staging'''
-
+//         echo 'Build image'
+//         sh 'docker build -t hw .'          
+//         }
 //       }
-//     }
-
-//     stage('Run docker on devbe-srv01') {
+    
+//     stage('Tag image') {
 //       steps {
-//         sh 'ssh-keyscan -H devbe-srv01 >> ~/.ssh/known_hosts'
-//         sh '''ssh jenkins@devbe-srv01 << EOF
-// 	sudo docker pull devcvs-srv01:5000/shop2-backend/gateway-api:2-staging
-// 	cd /etc/shop/docker
-// 	sudo docker-compose up -d
-// EOF'''
+//         echo 'Tag image'
+//         sh 'docker tag hw kekcment/hw'
+
+//         }
+//     }
+
+//     stage('Push image') {
+//       steps {
+//         echo 'Push image'
+//         sh 'docker push kekcment/hw'
+//         }
+//     }
+
+//     stage('Deploy on slave1') {
+//       steps {
+//         sh '''ssh -tt root@84.201.177.23 << EOF
+// 	      sudo docker pull kekcment/hw && sudo docker run -d -p 8088:8080 kekcment/hw
+//         exit      
+//         EOF'''
 //       }
 //     }
-//   }
-//   triggers {
-//     pollSCM('*/1 H * * *')
-//   }
+
+// }
 // }
