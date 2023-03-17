@@ -24,35 +24,27 @@ pipeline {
       }
     }
 
-    // stage('Show file War') {
-    //   steps {
-    //     echo 'ShoW file War'
-    //     sh 'cd /tmp/sertification'
-    //     sh 'ls /tmp/sertification'
-    //   }
-    // }
-    
-//     stage('Make docker image') {
-//       steps {
-//         echo 'Build image'
-//         sh 'docker build -t hw .'          
-//         }
-//       }
-    
-//     stage('Tag image') {
-//       steps {
-//         echo 'Tag image'
-//         sh 'docker tag hw kekcment/hw'
 
-//         }
-//     }
+    stage('Make docker image') {
+      steps {
+        echo 'Build image'
+        sh 'docker build -t prod .'          
+        }
+      }
+    
+    stage('Tag image') {
+      steps {
+        echo 'Tag image'
+        sh 'docker tag prod kekcment/prod:$verison'
+        }
+    }
 
-//     stage('Push image') {
-//       steps {
-//         echo 'Push image'
-//         sh 'docker push kekcment/hw'
-//         }
-//     }
+    stage('Push image') {
+      steps {
+        echo 'Push image'
+        sh 'docker push kekcment/prod:$version'
+        }
+    }
 
 //     stage('Deploy on slave1') {
 //       steps {
