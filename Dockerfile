@@ -6,5 +6,5 @@ RUN apt install git -y
 RUN DEBIAN_FRONTEND=noninteractive apt-get install maven -y
 WORKDIR /tmp/
 RUN git clone https://github.com/kekcment/sertification.git
-WORKDIR  /tmp/boxfuse-sample-java-war-hello/
+WORKDIR  /tmp/sertification/
 RUN mvn package
