@@ -35,14 +35,14 @@ pipeline {
     stage('Tag image') {
       steps {
         echo 'Tag image'
-        sh 'docker tag prod kekcment/prod:$verison'
+        sh 'docker tag prod kekcment/prod:${verison}'
         }
     }
 
     stage('Push image') {
       steps {
         echo 'Push image'
-        sh 'docker push kekcment/prod:$version'
+        sh 'docker push kekcment/prod:${version}'
         }
     }
 
