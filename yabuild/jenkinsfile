@@ -1,0 +1,18 @@
+pipeline {
+    agent any
+    environment {
+        YC_ACCOUNT_KEY_FILE = credentials('YC_ACCOUNT_KEY_FILE')
+        YC_FOLDER_ID = credentials('YC_FOLDER_ID')
+        YC_SUBNET_ID = credentials('YC_SUBNET_ID')
+    }
+   
+   stage('test terraform run') {
+            steps {
+                //sh 'cd tf configs/build_tf/'
+                sh 'terraform workspace select ${environment}'
+                sh 'terraform -chdir=tf_configs/yabuild_tf/ init'
+                sh 'terraform -chdir=tf_configs/yabuild_tf/ plan'
+                sh 'terraform -chdir=tf_configs/yabuild_tf/ apply -auto-approve'
+            }
+        }
+}
