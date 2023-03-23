@@ -53,7 +53,7 @@
 
     
     - name: Build image
-      shell: docker build -t certification -f /tmp/
+      shell: docker build -t certification -f /tmp/certification
       args:
         chdir: /tmp/certification
 
