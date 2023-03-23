@@ -16,5 +16,5 @@
   - name: Synchronize war.file
     synchronize:
       mode: push
-      src: /tmp/certification/target/hello-1.0.war
+      src: /tmp/certification/hello-1.0.war
       dest: /var/lib/tomcat9/webapps/
