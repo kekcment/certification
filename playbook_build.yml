@@ -49,8 +49,13 @@
     # - name: Build image
     #   command: docker build -t certification -f /tmp/certification/ .
 
+      – name: copy file from local host to remote host (relative path, ./files/)
+      сopy:
+      src: /ya/docker_login.txt 
+      dest: /tmp/certification/docker_login.txt 
+
     - name: DockerHub Login
-      shell: cat /ya/docker_login.txt 
+      shell: cat /tmp/certification/docker_login.txt 
     
     - name: Build image
       shell: docker build -t certification -f /tmp/certification/ .   
