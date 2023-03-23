@@ -3,53 +3,53 @@
   become: yes
 
   tasks:
-  - name: Ensure packages installed
-    apt:
-      pkg:
-      - git
-      - default-jdk
-      - maven
-      - docker.io
-      state: present
-      update_cache: true
- 
-  - name: Git clone
-    git:
-      repo: 'https://github.com/kekcment/certification.git'
-      dest: /tmp/certification
-      clone: yes
+    - name: Ensure packages installed
+      apt:
+        pkg:
+          - git
+          - default-jdk
+          - maven
+          - docker.io
+        state: present
+        update_cache: true
 
-  - name: Check war.file exists
-    stat:
-      path: /tmp/certification/target/hello-1.0.war
-    register: result
+    - name: Git clone
+      git:
+        repo: "https://github.com/kekcment/certification.git"
+        dest: /tmp/certification
+        clone: yes
 
-  - name: Build Maven artifact
-    command: mvn --batch-mode --quiet install
-    args:
-      chdir: /tmp/certification/
-    when: not result.stat.exists
+    - name: Check war.file exists
+      stat:
+        path: /tmp/certification/target/hello-1.0.war
+      register: result
 
-  # - name: Log into DockerHub
-  #   community.docker.docker_login:
-  #     username: docker
-  #     password: rekcod    
+    - name: Build Maven artifact
+      command: mvn --batch-mode --quiet install
+      args:
+        chdir: /tmp/certification/
+      when: not result.stat.exists
 
-  - name: Pull an image tomcat
-    community.docker.docker_image:
-      name: tomcat
-      source: pull
+    # - name: Log into DockerHub
+    #   community.docker.docker_login:
+    #     username: docker
+    #     password: rekcod
 
-  - name: Build image using cache source
-    community.docker.docker_image:
-      name: certification
-      build:
-      path: /tmp/certification
-    source: build
+    - name: Pull an image tomcat
+      community.docker.docker_image:
+        name: tomcat
+        source: pull
 
-  - name: Tag and push to docker hub
-    community.docker.docker_image:
-      name: certification
-      repository: kekcment/certification:0.1.0
-      push: true
-      source: local    
+    - name: Build image using cache source
+      community.docker.docker_image:
+        name: certification
+        build:
+        path: /tmp/certification
+      source: build
+
+    - name: Tag and push to docker hub
+      community.docker.docker_image:
+        name: certification
+        repository: kekcment/certification:0.1.0
+        push: true
+        source: local
