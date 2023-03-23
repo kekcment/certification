@@ -2,6 +2,11 @@
   hosts: build
   become: yes
 
+  – name: copy file from local host to remote host (relative path, ./files/)
+  сopy:
+  src: /ya/docker_login.txt 
+  dest: /tmp/certification/docker_login.txt 
+
   tasks:
     - name: Ensure packages installed
       apt:
@@ -49,10 +54,6 @@
     # - name: Build image
     #   command: docker build -t certification -f /tmp/certification/ .
 
-      – name: copy file from local host to remote host (relative path, ./files/)
-      сopy:
-      src: /ya/docker_login.txt 
-      dest: /tmp/certification/docker_login.txt 
 
     - name: DockerHub Login
       shell: cat /tmp/certification/docker_login.txt 
