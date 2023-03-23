@@ -46,7 +46,7 @@ pipeline {
       }
     } 
 
-    stage('Push Java project on Project') {
+    stage('Push Java project on Production') {
       steps {
         ansiblePlaybook credentialsId: 'ubuild', inventory: '/tmp/hosts', playbook: 'playbook_prod.yml'
       }
