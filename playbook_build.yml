@@ -47,7 +47,7 @@
     #   source: build
 
     - name: Build image
-      command: docker build -t certification -f /tmp/certification .
+      command: docker build -t certification -f /tmp/certification/ .
 
     - name: Tag and push to docker hub
       command: docker tag certification kekcment/certification:0.1.0 && docker push kekcment/certification:0.1.0
