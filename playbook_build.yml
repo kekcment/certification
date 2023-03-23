@@ -36,15 +36,18 @@
     #     username: docker
     #     password: rekcod
 
-    - name: Install ansible-galaxy collection
-      shell: ansible-galaxy collection install community.docker
+    # - name: Install ansible-galaxy collection
+    #   shell: ansible-galaxy collection install community.docker
 
-    - name: Build image using cache source
-      community.docker.docker_image:
-        name: certification
-        build:
-        path: /tmp/certification
-      source: build
+    # - name: Build image using cache source
+    #   community.docker.docker_image:
+    #     name: certification
+    #     build:
+    #     path: /tmp/certification
+    #   source: build
+
+    - name: Build image
+      command: docker build -t certification .
 
     - name: Tag and push to docker hub
       community.docker.docker_image:
