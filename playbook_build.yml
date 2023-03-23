@@ -10,6 +10,7 @@
           - default-jdk
           - maven
           - docker.io
+          # - ansible-galaxy collection install community.docker
         state: present
         update_cache: true
 
@@ -34,6 +35,9 @@
     #   community.docker.docker_login:
     #     username: docker
     #     password: rekcod
+
+    - name: Install ansible-galaxy collection
+      shell: ansible-galaxy collection install community.docker
 
     - name: Build image using cache source
       community.docker.docker_image:
