@@ -10,8 +10,6 @@
           - default-jdk
           - maven
           - docker.io
-          - ansible
-          # - ansible-galaxy collection install community.docker
         state: present
         update_cache: true
 
@@ -37,18 +35,23 @@
     #     username: docker
     #     password: rekcod
 
-    - name: Install ansible-galaxy collection
-      shell: ansible-galaxy collection install community.docker
+    # - name: Install ansible-galaxy collection
+    #   shell: ansible-galaxy collection install community.docker
 
-    - name: Build image using cache source
-      community.docker.docker_image:
-        name: certification
-        build:
-        path: /tmp/certification
-      source: build
+    # - name: Build image using cache source
+    #   community.docker.docker_image:
+    #     name: certification
+    #     build:
+    #     path: /tmp/certification
+    #   source: build
 
     # - name: Build image
     #   command: docker build -t certification -f /tmp/certification/ .
+
+    - name: Build image
+       shell: docker build -t certification -f Dockerfile /tmp/certification/
+      args:
+        chdir: /tmp/vkr_project    
 
     # - name: Tag and push to docker hub
     #   command: docker tag certification kekcment/certification:0.1.0 && docker push kekcment/certification:0.1.0
