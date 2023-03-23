@@ -34,7 +34,7 @@ pipeline {
     
     stage('Destroy VM1') {
       steps {
-        sh 'terraform -chdir=build_tf/ destroy'
+        sh 'terraform -chdir=build_tf/ destroy -auto-approve'
       }
     }   
   
