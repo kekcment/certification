@@ -46,26 +46,33 @@ pipeline {
       }
     } 
 
-    stage('Make docker image') {
+    stage('Push Java project on Project') {
       steps {
-        echo 'Build image'
-        sh 'docker build -t prod .'          
+        ansiblePlaybook credentialsId: 'ubuild', inventory: '/tmp/hosts', playbook: 'playbook_prod.yml'
       }
-    }
-    
-    stage('Tag image') {
-      steps {
-        echo 'Tag image'
-        sh 'docker tag prod kekcment/prod'
-      }
-    }
+    } 
 
-    stage('Push image') {
-      steps {
-        echo 'Push image'
-        sh 'docker push kekcment/prod'
-        }
-    }
+
+    // stage('Make docker image') {
+    //   steps {
+    //     echo 'Build image'
+    //     sh 'docker build -t prod .'          
+    //   }
+    // }
+    
+    // stage('Tag image') {
+    //   steps {
+    //     echo 'Tag image'
+    //     sh 'docker tag prod kekcment/prod'
+    //   }
+    // }
+
+    // stage('Push image') {
+    //   steps {
+    //     echo 'Push image'
+    //     sh 'docker push kekcment/prod'
+    //     }
+    // }
 
 //     stage('Deploy on slave1') {
 //       steps {
