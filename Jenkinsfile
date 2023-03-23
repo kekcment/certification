@@ -1,59 +1,63 @@
 pipeline {
   
-  agent {
-    docker {
-        image 'kekcment/jdk-plus:0.1.0'
-        args '--privileged -v /var/run/docker.sock:/var/run/docker.sock -u root'
-    }
-  }   
+  // agent {
+  //   docker {
+  //       image 'kekcment/jdk-plus:0.1.0'
+  //       args '--privileged -v /var/run/docker.sock:/var/run/docker.sock -u root'
+  //   }
+  // }   
+
+  agent any
 
   stages {
       
-     stage('get project') {
-            steps {
-                echo 'git clone'
-                git 'https://github.com/kekcment/ya_ter.git'
-            }
-        }
-
-        stage('test terraform run') {
-            steps {
-                sh 'terraform -chdir=build_tf/ init'
-                sh 'terraform -chdir=build_tf/ plan'
-                sh 'terraform -chdir=build_tf/ apply -auto-approve'
-            }
-        }
-    
-       
-    
     stage('Copy source from git') {
       steps {
         echo 'git clone'
-        sh 'cd /tmp/'
         git 'https://github.com/kekcment/certification.git'
       }
-    }    
-    
-    stage('Build War') {
-      steps {
-        echo 'Build War'
-        sh 'mvn package'
-      }
-    }
+    }  
 
+    stage('Build VM1') {
+      steps {
+        sh 'terraform -chdir=build_tf/ init'
+        sh 'terraform -chdir=build_tf/ plan'
+        sh 'terraform -chdir=build_tf/ apply -auto-approve'
+      }
+    } 
+    
+    stage('Build Java project') {
+      steps {
+        ansiblePlaybook credentialsId: 'ubuild', inventory: '/tmp/hosts', playbook: 'playbook_build.yml'
+      }
+    }   
+    
+    stage('Destroy VM1') {
+      steps {
+        sh 'terraform -chdir=build_tf/ destroy'
+      }
+    }   
+  
+    stage('Build VM2') {
+      steps {
+        sh 'terraform -chdir=prod_tf/ init'
+        sh 'terraform -chdir=prod_tf/ plan'
+        sh 'terraform -chdir=prod_tf/ apply -auto-approve'
+      }
+    } 
 
     stage('Make docker image') {
       steps {
         echo 'Build image'
         sh 'docker build -t prod .'          
-        }
       }
+    }
     
     stage('Tag image') {
       steps {
         echo 'Tag image'
         sh 'docker tag prod kekcment/prod'
-        }
+      }
     }
 
     stage('Push image') {

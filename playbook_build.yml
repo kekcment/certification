@@ -1,0 +1,42 @@
+- name: Build java project
+  hosts: build
+  become: yes
+
+  tasks: 
+  - name: Ensure maven package is present
+    apt: 
+      name: maven
+      state: present
+
+  - name: Ensure git package is present
+    apt: 
+      name: git
+      state: present
+
+  - name: Ensure default-jdk package is present
+    apt: 
+      name: default-jdk
+      state: present
+
+  - name: Git clone
+    git:
+      repo: 'https://github.com/kekcment/certification.git'
+      dest: /tmp/certification
+      clone: yes
+
+  - name: Check war.file exists
+    stat:
+      path: /tmp/certification/target/hello-1.0.war
+    register: result
+
+  - name: Build Maven artifact
+    command: mvn --batch-mode --quiet install
+    args:
+      chdir: /tmp/certification/
+    when: not result.stat.exists  
+
+  - name: Synchronize war.file
+    synchronize:
+      mode: pull
+      src: /tmp/certification/target/hello-1.0.war
+      dest: /tmp/certification/
