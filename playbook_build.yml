@@ -53,12 +53,12 @@
 
     
     - name: Build image
-      shell: docker build -t certification -f /tmp/certification
+      shell: docker build -t image -f /tmp/certification .
       args:
         chdir: /tmp/certification
 
     - name: tag docker image
-      shell: docker tag certification kekcment/certification:0.1.0
+      shell: docker tag image kekcment/certification:0.1.0
 
     - name: push image to registry
       shell: docker push kekcment/certification:0.1.0      
