@@ -35,11 +35,6 @@
     #     username: docker
     #     password: rekcod
 
-    - name: Pull an image tomcat
-      community.docker.docker_image:
-        name: tomcat
-        source: pull
-
     - name: Build image using cache source
       community.docker.docker_image:
         name: certification
