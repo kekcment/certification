@@ -2,22 +2,17 @@
   hosts: build
   become: yes
 
-  tasks: 
-  - name: Ensure maven package is present
-    apt: 
-      name: maven
+  tasks:
+  - name: Ensure packages installed
+    apt:
+      pkg:
+      - git
+      - default-jdk
+      - maven
+      - docker.io
       state: present
-
-  - name: Ensure git package is present
-    apt: 
-      name: git
-      state: present
-
-  - name: Ensure default-jdk package is present
-    apt: 
-      name: default-jdk
-      state: present
-
+      update_cache: true
+ 
   - name: Git clone
     git:
       repo: 'https://github.com/kekcment/certification.git'
@@ -33,10 +28,28 @@
     command: mvn --batch-mode --quiet install
     args:
       chdir: /tmp/certification/
-    when: not result.stat.exists  
+    when: not result.stat.exists
 
-  - name: Synchronize war.file
-    synchronize:
-      mode: pull
-      src: /tmp/certification/target/hello-1.0.war
-      dest: /tmp/certification/
+  # - name: Log into DockerHub
+  #   community.docker.docker_login:
+  #     username: docker
+  #     password: rekcod    
+
+  - name: Pull an image tomcat
+    community.docker.docker_image:
+      name: tomcat
+      source: pull
+
+  - name: Build image using cache source
+    community.docker.docker_image:
+      name: certification
+      build:
+      path: /tmp/certification
+    source: build
+
+  - name: Tag and push to docker hub
+    community.docker.docker_image:
+      name: certification
+      repository: kekcment/certification:0.1.0
+      push: true
+      source: local    

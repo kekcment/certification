@@ -2,19 +2,18 @@
   hosts: prod
   become: yes
 
-  tasks: 
-  - name: Ensure tomcat9 package is present
-    apt: 
-      name: tomcat9
-      state: present
+  tasks:
+  - name: Ensure docker installed
+    apt:
+     name: docker.io
+     state: present
 
-  - name: Ensure default-jdk  package is present
-    apt: 
-      name: default-jdk
-      state: present
+  - name: Pull an image
+    community.docker.docker_image:
+      name: kekcment/certification:0.1.0
+      source: pull
 
-  - name: Synchronize war.file
-    synchronize:
-      mode: push
-      src: /tmp/certification/hello-1.0.war
-      dest: /var/lib/tomcat9/webapps/
+  - name: Start a container
+    docker_container:
+      name: kekcment/certification:0.1.0
+      state: started   
