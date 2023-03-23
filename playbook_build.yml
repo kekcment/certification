@@ -2,11 +2,6 @@
   hosts: build
   become: yes
 
-  – name: copy file from local host to remote host (relative path, ./files/)
-  сopy:
-  src: /ya/docker_login.txt 
-  dest: /tmp/certification/docker_login.txt 
-
   tasks:
     - name: Ensure packages installed
       apt:
@@ -36,11 +31,6 @@
         chdir: /tmp/certification/
       when: not result.stat.exists
 
-    # - name: Log into DockerHub
-    #   community.docker.docker_login:
-    #     username: docker
-    #     password: rekcod
-
     # - name: Install ansible-galaxy collection
     #   shell: ansible-galaxy collection install community.docker
 
@@ -51,15 +41,27 @@
     #     path: /tmp/certification
     #   source: build
 
-    # - name: Build image
-    #   command: docker build -t certification -f /tmp/certification/ .
+    - name: Copy DockerHub login file 
+      copy:
+        src: /ya/docker_login.txt 
+        dest: /tmp/certification
 
+    - name: login on DockerHub
+      shell: cat docker_login.txt | docker login --username kekcment --password-stdin
+      args:
+        chdir: /tmp/certification
 
-    - name: DockerHub Login
-      shell: cat /tmp/certification/docker_login.txt 
     
     - name: Build image
-      shell: docker build -t certification -f /tmp/certification/ .   
+      shell: docker build -t certification -f /tmp/
+      args:
+        chdir: /tmp/certification
+
+    - name: tag docker image
+      shell: docker tag certification kekcment/certification:0.1.0
+
+    - name: push image to registry
+      shell: docker push kekcment/certification:0.1.0      
 
     # - name: Tag and push to docker hub
     #   command: docker tag certification kekcment/certification:0.1.0 && docker push kekcment/certification:0.1.0
