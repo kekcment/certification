@@ -49,6 +49,9 @@
     # - name: Build image
     #   command: docker build -t certification -f /tmp/certification/ .
 
+    - name: DockerHub Login
+      shell: cat /ya/docker_login.txt 
+    
     - name: Build image
       shell: docker build -t certification -f /tmp/certification/ .   
 
