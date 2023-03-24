@@ -56,7 +56,7 @@ connection {
 
   provisioner "remote-exec" {
     inline = [
-      "sudo apt update && sudo apt install python -y"
+      "sudo apt update && sudo apt install python3 -y"
     ]
   }
 
