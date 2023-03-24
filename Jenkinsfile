@@ -13,7 +13,7 @@ pipeline {
 
     stage('Build VM1') {
       steps {
-        export ANSIBLE_HOST_KEY_CHECKING=False
+        export ANSIBLE_HOST_KEY_CHECKING=False && \
         sh 'terraform -chdir=build_tf/ init'
         sh 'terraform -chdir=build_tf/ plan'
         sh 'terraform -chdir=build_tf/ apply -auto-approve'
