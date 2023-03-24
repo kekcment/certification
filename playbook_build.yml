@@ -10,7 +10,6 @@
           - default-jdk
           - maven
           - docker.io
-          # - ansible
         state: present
         update_cache: true
 
@@ -31,16 +30,6 @@
         chdir: /tmp/certification/
       when: not result.stat.exists
 
-    # - name: Install ansible-galaxy collection
-    #   shell: ansible-galaxy collection install community.docker
-
-    # - name: Build image using cache source
-    #   community.docker.docker_image:
-    #     name: certification
-    #     build:
-    #     path: /tmp/certification
-    #   source: build
-
     - name: Copy DockerHub login file 
       copy:
         src: /ya/docker_login.txt 
@@ -51,17 +40,33 @@
       args:
         chdir: /tmp/certification
 
+    # - name: Install ansible-galaxy collection
+    #   shell: ansible-galaxy collection install community.docker
+
+    - name: Build image 
+      community.docker.docker_image:
+        name: certification
+        build:
+        path: /tmp/certification
+        source: build
+
+    - name: Tag and push to docker hub
+      community.docker.docker_image:
+        name: certification
+        repository: kekcment/certification:0.1.0
+        push: true
+        source: local  
     
-    - name: Build image
-      shell: docker build -t image -f Dockerfile target/
-      args:
-        chdir: /tmp/certification
+    # - name: Build image
+    #   shell: docker build -t image -f Dockerfile target/
+    #   args:
+    #     chdir: /tmp/certification
 
-    - name: tag docker image
-      shell: docker tag image kekcment/certification:0.1.0
+    # - name: tag docker image
+    #   shell: docker tag image kekcment/certification:0.1.0
 
-    - name: push image to registry
-      shell: docker push kekcment/certification:0.1.0      
+    # - name: push image to registry
+    #   shell: docker push kekcment/certification:0.1.0      
 
     # - name: Tag and push to docker hub
     #   command: docker tag certification kekcment/certification:0.1.0 && docker push kekcment/certification:0.1.0
