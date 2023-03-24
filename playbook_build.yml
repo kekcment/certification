@@ -10,6 +10,7 @@
           - default-jdk
           - maven
           - docker.io
+          
         state: present
         update_cache: true
 
@@ -39,9 +40,6 @@
       shell: cat docker_login.txt | docker login --username kekcment --password-stdin
       args:
         chdir: /tmp/certification
-
-    # - name: Install ansible-galaxy collection
-    #   shell: ansible-galaxy collection install community.docker
 
     - name: Build image 
       community.docker.docker_image:
