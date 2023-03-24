@@ -58,14 +58,3 @@
         repository: kekcment/certification:0.1.0
         push: true
         source: local  
-    
-    # - name: Build image
-    #   shell: docker build -t image -f Dockerfile target/
-    #   args:
-    #     chdir: /tmp/certification
-
-    # - name: tag docker image
-    #   shell: docker tag image kekcment/certification:0.1.0
-
-    # - name: push image to registry
-    #   shell: docker push kekcment/certification:0.1.0      
