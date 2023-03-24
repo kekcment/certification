@@ -61,6 +61,6 @@ connection {
   }
 
 provisioner "local-exec" {
-    command = "echo > /tmp/hosts && echo '[prod]' > /tmp/hosts && echo ${self.network_interface[0].nat_ip_address} >> /tmp/hosts"
+    command = "echo > /ya/hosts && echo '[prod]' > /ya/hosts && echo ${self.network_interface[0].nat_ip_address} >> /ya/hosts"
   }
 }
