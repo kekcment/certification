@@ -3,30 +3,39 @@
   become: yes
 
   tasks:
-  - name: Ensure docker installed
-    apt:
-     name: docker.io
-     state: present
+    - name: Ensure packages installed
+      apt:
+        pkg:
+          - docker.io
+          - python3-pip
+        state: present
+        update_cache: true
 
-  - name: Copy DockerHub login file 
-    copy:
-      src: /ya/docker_login.txt 
-      dest: /tmp/
+    - name: Install pip docker
+      pip:
+         name: docker 
 
-  - name: login on DockerHub
-    shell: cat docker_login.txt | docker login --username kekcment --password-stdin
-    args:
-      chdir: /tmp/          
 
-  - name: Pull an image & Start application
-    shell: docker run -d -p 8080:8080 kekcment/certification:0.1.0
+  # - name: Copy DockerHub login file 
+  #   copy:
+  #     src: /ya/docker_login.txt 
+  #     dest: /tmp/
 
-  # - name: Pull an image
-  #   community.docker.docker_image:
-  #     name: kekcment/certification:0.1.0
-  #     source: pull
+  # - name: login on DockerHub
+  #   shell: cat docker_login.txt | docker login --username kekcment --password-stdin
+  #   args:
+  #     chdir: /tmp/          
 
-  # - name: Start a container
-  #   docker_container:
-  #     name: kekcment/certification:0.1.0
-  #     state: started   
+  # - name: Pull an image & Start application
+  #   shell: docker run -d -p 8080:8080 kekcment/certification:0.1.0
+
+    - name: Pull an image
+      community.docker.docker_image:
+        name: kekcment/certification:0.1.0
+        source: pull
+
+    - name: Start a container
+      community.docker.docker_container:
+        name: Production
+        image: kekcment/certification:0.1.0
+        state: started   
