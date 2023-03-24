@@ -38,4 +38,5 @@
       community.docker.docker_container:
         name: Production
         image: kekcment/certification:0.1.0
-        state: started   
+        state: started
+        ports: "8080:8080"  
