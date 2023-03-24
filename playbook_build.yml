@@ -47,7 +47,7 @@
       community.docker.docker_image:
         name: certification
         build:
-        path: /tmp/certification
+          path: /tmp/certification
         source: build
 
     - name: Tag and push to docker hub
