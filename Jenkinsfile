@@ -15,8 +15,7 @@ pipeline {
       steps {        
         sh 'terraform -chdir=build_tf/ init'
         sh 'terraform -chdir=build_tf/ plan'
-        sh 'terraform -chdir=build_tf/ apply -auto-approve'
-        sh 'export ANSIBLE_HOST_KEY_CHECKING=False'
+        sh 'terraform -chdir=build_tf/ apply -auto-approve && export ANSIBLE_HOST_KEY_CHECKING=False'
       }
     } 
     
