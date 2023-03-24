@@ -10,7 +10,7 @@
           - default-jdk
           - maven
           - docker.io
-
+          - python3-pip
         state: present
         update_cache: true
 
@@ -65,6 +65,3 @@
 
     # - name: push image to registry
     #   shell: docker push kekcment/certification:0.1.0      
-
-    # - name: Tag and push to docker hub
-    #   command: docker tag certification kekcment/certification:0.1.0 && docker push kekcment/certification:0.1.0
