@@ -25,11 +25,11 @@ pipeline {
       }
     }   
     
-    stage('Destroy VM1') {
-      steps {
-        sh 'terraform -chdir=build_tf/ destroy -auto-approve'
-      }
-    }   
+    // stage('Destroy VM1') {
+    //   steps {
+    //     sh 'terraform -chdir=build_tf/ destroy -auto-approve'
+    //   }
+    // }   
   
     stage('Build VM2') {
       steps {
